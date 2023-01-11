@@ -1,8 +1,12 @@
-#include "Scanner.h"
-#include "ErrorFunc.h"
+#include "Header Files/Scanner.h"
+#include "Header Files/ErrorFunc.h"
 
 namespace lin{
 namespace json{
+
+    void Scanner::Rollback(){
+        current_ = prev_pos_;
+    }
 
     bool Scanner::IsAtEnd() { return current_ >= source_.size(); }
     char Scanner::Advance() { return source_[current_++]; }
@@ -99,6 +103,9 @@ namespace json{
         {
             return JsonTokenType::END_OF_SOURCE;
         }
+
+        prev_pos_ = current_;
+
         char c = Advance();
         switch (c)
         {
